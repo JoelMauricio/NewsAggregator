@@ -1,0 +1,143 @@
+---
+// src/components/Navbar.astro
+const navItems = [
+  { label: 'News', href: '/' },
+  { label: 'Sources', href: '/' },
+  { label: 'Topics', href: '/' },
+  { label: 'Profile', href: '/' }
+];
+---
+
+<nav class="w-full flex justify-between items-center px-6 py-4 border-b-2 border-secondary-100 bg-white">
+  <h1 class="text-accent font-bold text-2xl">NewsNest</h1>
+
+  <!-- Desktop Menu -->
+  <div class="hidden md:flex gap-6">
+    {navItems.map(item => (
+      <a
+        href={item.href}
+        class="font-semibold hover:text-primary-700 transition-colors"
+      >
+        {item.label}
+      </a>
+    ))}
+  </div>
+
+  <!-- Mobile Menu Button -->
+  <button
+    id="mobile-menu-button"
+    class="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+    aria-label="Toggle mobile menu"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="w-6 h-6"
+      id="menu-icon"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+      />
+    </svg>
+  </button>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="fixed inset-y-0 right-0 transform translate-x-full transition-transform duration-200 ease-in-out md:hidden"
+  >
+    <div class="min-h-screen w-64 bg-white shadow-lg flex flex-col">
+      <div class="p-4 flex justify-between items-center border-b">
+        <h2 class="text-lg font-bold text-accent">Menu</h2>
+        <button
+          id="close-menu-button"
+          class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          aria-label="Close mobile menu"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+      </div>
+      <div class="flex flex-col py-4">
+        {navItems.map(item => (
+          <a
+            href={item.href}
+            class="px-6 py-3 font-semibold hover:bg-gray-100 transition-colors"
+          >
+            {item.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const closeMenuButton = document.getElementById('close-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuIcon = document.getElementById('menu-icon');
+
+  // Function to open mobile menu
+  function openMobileMenu() {
+    mobileMenu?.classList.remove('translate-x-full');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Function to close mobile menu
+  function closeMobileMenu() {
+    mobileMenu?.classList.add('translate-x-full');
+    document.body.style.overflow = '';
+  }
+
+  // Toggle mobile menu
+  mobileMenuButton?.addEventListener('click', openMobileMenu);
+  closeMenuButton?.addEventListener('click', closeMobileMenu);
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (event) => {
+    const target = event.target as Node;
+    if (
+      mobileMenu &&
+      !mobileMenu.contains(target) &&
+      !mobileMenuButton?.contains(target)
+    ) {
+      closeMobileMenu();
+    }
+  });
+
+  // Handle escape key
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeMobileMenu();
+    }
+  });
+</script>
+
+<style>
+  /* Optional: Add backdrop overlay for mobile menu */
+  #mobile-menu:not(.translate-x-full)::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+  }
+</style>

@@ -1,0 +1,14 @@
+---
+  import {Topic,Source, Keyword} from '../models';
+
+interface Props {
+    item: Topic | Source | Keyword;
+}
+
+const {item} = Astro.props;
+
+---
+
+<li class="flex flex-col rounded-[10px] bg-accent-200 border-primary-200 text-accent-400 border-[2px] gap-[15px] px-[15px] py-[5px]">
+    <p>{item.name}</p>
+</li>
